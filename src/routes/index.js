@@ -8,7 +8,7 @@ import Seller from '@/components/SellerPage.vue' ;
 import ItemInsert from '@/components/ItemInsertPage.vue' ;
 import ItemUpdate from '@/components/ItemUpdatePage.vue' ;
 
-const router = createRouter({ //주소 체계를 어떻게 쓸꺼냐.. 샵 없는걸로!
+const router = createRouter({ 
     history : createWebHashHistory(),
     routes : [
         {path :'/', component:Home},

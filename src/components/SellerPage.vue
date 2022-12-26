@@ -4,7 +4,7 @@
 
         
         <el-button type="info" size="small" @click="handleItemInsert()">물품등록</el-button>
-        <!-- 라우터 링크로 하니까 밑줄생겨서 함수로 함 -->
+        <!-- 라우터 링크로 하니까 밑줄생겨서 함수로 했으나 style 조절하면 밑줄 없어진다구요 -->
         
         <el-table :data="rows" size="small">
             <!-- to refs했기 때문에 state 생략가능 -->
@@ -13,11 +13,12 @@
                 <template #default="scope">
                     <img :src="scope.row.img" style="width: 50px;"/>
                     <!-- 이미지 넣으려면 예제에서 버튼 들어가있는것.. 이런것 찾아야해. 기존의 것은 string만 들어감 -->
-                    <!-- 데이터를 통으로 줬기때문에 하나의 정보만 꺼내는게 필요 -->
-                    <!-- 최초에 한번만 데이터를 주고 나머지는 내부에서 꺼내서 사용해야함. 데이터를 최초에 다 넣어줬기 때문에 -->
+                    <!-- 최초에 한번만 데이터를 주고 나머지는 내부에서 꺼내서 사용해야함 -->
+                    <!-- 데이터를 통으로 줬기때문에 하나의 정보만 꺼내는게 필요-> scope 이용! -->
+                    <!-- scope는 component안의 데이터를 다시 꺼낼때 사용하는것 -->
                     <!-- 예제를 보니 scope.row.tag에서 가져왔구나... 그래서 row에 데이터를 받았다는걸 추측해서 사용 component 내부를 못보기 때문에..! -->
                 </template>
-                <!-- // scope는 component안의 데이터를 다시 꺼낼때 사용하는것 -->
+                
             </el-table-column>
             <el-table-column prop="name" label="물품명" width="70" />
             <el-table-column prop="price" label="가격" width="70" />
@@ -70,8 +71,6 @@ export default {
         const router = useRouter();
 
         // 함수
-
-
         const handleUpdate = (no) => {
             router.push({path:'/itemupdate', query:{no:no}});
         }
@@ -99,7 +98,7 @@ export default {
             state.no = no;
             state.centerDialogVisible = true;
         }
-        // dialog는 화면상에 있지만 숨겨져있다가 눌리면 보이게 하는것. 타이밍을 .. 값이 참이 될때 인것! 취소 누르면 창 사라지게 하려면 거짓으로 바꾸면 되는것!
+        // dialog는 화면상에 있지만 숨겨져있다가 삭제버튼 눌리면 보이게 하는것. 보이게 하는 타이밍이 centerDialogVisible 값이 참이 될때 인것! 취소 눌러서 창 사라지게 하려면 centerDialogVisible값을 거짓으로 바꾸면 되는것!
 
         const handlePage = ( no ) => {
             console.log(no);

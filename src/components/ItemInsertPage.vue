@@ -25,6 +25,7 @@
             <img :src="state.imageurl" style="width: 100px;"/>
             <input type="file" style="width: 200px;" @change="handleImage($event)" />
             <!-- 여기에 el-input으로 하니 e.target.files에 보관 되있지 않네...! 어디에 들어가있는지 예를 봐도 모르면 어떻게 하나? -->
+            <!-- input에는 change 안되게 되어있었음... 업로드 이용해야함 -->
         </div>
 
         <div>
