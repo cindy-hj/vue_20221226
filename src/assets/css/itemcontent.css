@@ -1,0 +1,14 @@
+.container {
+    width: 1000px;
+    margin: 0px auto;
+    padding: 5px;
+    border: 1px solid #cccccc;
+}
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+.item {
+    border: 1px solid #cccccc;
+    padding: 5px;
+}

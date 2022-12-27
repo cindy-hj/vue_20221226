@@ -30,6 +30,7 @@
 
             <div v-for="tmp of state.imageurl" :key="tmp" style="display:inline-block;">
                 <img :src="tmp.img" style="width: 100px;" />
+                <button @click="handleImageDelete(tmp._id)">x</button>
             </div>
 
             <div v-for="tmp of state.cnt" :key="tmp">
@@ -65,8 +66,22 @@ export default {
             imageurl : [],
         });
 
+        // 물품번호x, 서버 이미지의 번호
+        const handleImageDelete = async(no) => { // no는 서버 이미지의 번호! 삭제할때는 물품번호가 아니라 서버 이미지의 번호가 필요함
+            console.log(no);
+            const url = `/item101/subimagedelete.json?no=${no}`;
+            const headers = {"Content-Type":"application/json"};
+            const body = {};
+
+            const { data } = await axios.delete(url, {headers:headers, data:body})
+            console.log(data);
+            if(data.status === 200) {
+                handleData1();
+            }
+        };
+
         // 이미지가 변경될 시 정보를 state.images배열에 추가
-        // v-model을 사용하 수 없음, 수동으로 처리해야함.
+        // v-model을 사용할 수 없음, 수동으로 처리해야함.
         const handleImage = (tmp, img) => {
             console.log(tmp-1, img); // 배열은 0부터 시작이므로 tmp-1
             if(img.target.files.length > 0) {
@@ -77,13 +92,14 @@ export default {
             }
         }
 
+        // 추가시 물품번호를 필요
         const handleSubImage = async() => {
             console.log('handleSubImage');
             const url = `/item101/insertimages.json`;
             const headers = {"Content-Type":"multipart/form-data"};
             const body = new FormData();
 
-            body.append("code", state.no);
+            body.append("code", state.no); // code가 물품번호! 조회할때는 물품번호 필요
             for(let i=0; i<state.cnt; i++) { // 배열은 시작하는 값이 0이므로 등호 안들어감
                 body.append("image", state.images[i]);
             }
@@ -160,6 +176,7 @@ export default {
             FileMinus,
             handleSubImage,
             handleImage,
+            handleImageDelete,
         }
     }
 }

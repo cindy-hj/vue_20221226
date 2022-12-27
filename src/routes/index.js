@@ -7,6 +7,11 @@ import Home from '@/components/HomePage.vue' ; // 앞엔 변수명이라서 짧�
 import Seller from '@/components/SellerPage.vue' ;
 import ItemInsert from '@/components/ItemInsertPage.vue' ;
 import ItemUpdate from '@/components/ItemUpdatePage.vue' ;
+import ItemContent from '@/components/ItemContentPage.vue' ;
+import Order from '@/components/OrderPage.vue' ;
+import Join from '@/components/JoinPage.vue' ;
+import Login from '@/components/LoginPage.vue' ;
+import Logout from '@/components/LogoutPage.vue' ;
 
 const router = createRouter({ 
     history : createWebHashHistory(),
@@ -15,6 +20,11 @@ const router = createRouter({
         {path :'/seller', component:Seller},
         {path :'/iteminsert', component:ItemInsert},
         {path :'/itemupdate', component:ItemUpdate},
+        {path :'/itemcontent', component:ItemContent},
+        {path :'/order', component:Order},
+        {path :'/join', component:Join},
+        {path :'/login', component:Login},
+        {path :'/logout', component:Logout},
     ]
 });
 

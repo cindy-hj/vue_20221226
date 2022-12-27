@@ -4,7 +4,7 @@
 
         
         <el-button type="info" size="small" @click="handleItemInsert()">물품등록</el-button>
-        <!-- 라우터 링크로 하니까 밑줄생겨서 함수로 했으나 style 조절하면 밑줄 없어진다구요 -->
+        <!-- 라우터 링크로 하니까 밑줄생겨서 함수로 했으나 style에서 text-decoration:none으로 하면 밑줄 없어진다구요 -->
         
         <el-table :data="rows" size="small">
             <!-- to refs했기 때문에 state 생략가능 -->
@@ -115,6 +115,13 @@ export default {
             if(data.status === 200) {
                 state.rows  = data.result;
                 state.total = data.total;
+
+                for(let tmp of data.result) {
+                    if(tmp.content.length >20) {
+                        tmp.content = tmp.content.substring(0, 20) + "...";
+                        // 길이 20자 이상이면 이후는 ...으로 보이도록 substring 사용!
+                    }
+                }
             }
         };
 
