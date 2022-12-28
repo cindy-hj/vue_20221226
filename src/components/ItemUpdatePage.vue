@@ -61,13 +61,14 @@ export default {
         const state = reactive({
             no       : Number( route.query.no ), // 주소창 ?no=557
             row      : null,
-            cnt      : 2,
-            images   : [null, null, null, null, null], //최대 5개 가능
+            cnt      : 1,
+            images   : [null, null, null, null, null], //최대 5개 가능, 그냥 []로 표현해도 됨
             imageurl : [],
         });
 
         // 물품번호x, 서버 이미지의 번호
-        const handleImageDelete = async(no) => { // no는 서버 이미지의 번호! 삭제할때는 물품번호가 아니라 서버 이미지의 번호가 필요함
+        const handleImageDelete = async(no) => { // no는 서브이미지의 번호! 삭제할때는 물품번호가 아니라 서브이미지의 번호가 필요함
+            // 물품번호를 넣으면 서브이미지 모두 삭제됨
             console.log(no);
             const url = `/item101/subimagedelete.json?no=${no}`;
             const headers = {"Content-Type":"application/json"};

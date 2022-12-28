@@ -52,13 +52,22 @@ export default {
                 // stores의 state 값을 변경
                 store.commit('setLogged', true);
                 store.commit('setUserid', data.test._id);
-                store.commit('setDefaultActive', "/");
 
                 ElMessage({
                     message: '로그인 성공!',
                     type: 'success',
                 });
-                router.push({path:"/"});
+
+                // 홈으로 이동이 아니라 이전페이지로 이동이 필요
+                // 이전페이지 정보를 보관해야함. router에 페이지 이동 정보가 있다. 컴포넌트 호출될때마다 나오는 부분! 페이지 이동시 마다 내용이 찍힌다. to 안에 path
+                const path = sessionStorage.getItem("CURRENT_PATH");
+                // 문자를 object로 복원 시켜야 함! 
+                const query = JSON.parse (
+                    sessionStorage.getItem("QUERY"));
+
+                store.commit('setDefaultActive', path); // 로그인 후 활성화 되는 메뉴도 이전페이지걸로!
+                // 이전페이지로 이동
+                router.push({path:path, query:query});
             }
             else {
                 ElMessage({

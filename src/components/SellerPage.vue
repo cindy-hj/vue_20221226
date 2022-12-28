@@ -46,7 +46,8 @@
             </span>
             <template #footer>
                 <el-button type="primary" @click="handleDeleteAction()">확인</el-button>
-                <el-button @click="centerDialogVisible = false">취소</el-button>
+                <el-button @click="centerDialogVisible = false">취소</el-button> 
+                <!-- 클릭했을때 값을 바로 바꿔주도록 -->
             </template>
         </el-dialog>
     </div>

@@ -1,5 +1,15 @@
 <template>
     <div class="container">
+        
+        {{ state }}
+        <!-- // v-model 연결하기 -->
+        <input type="text" id="sample6_postcode" v-model="state.postcode" placeholder="우편번호"> 
+        <input type="button" @click="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+        <input type="text" id="sample6_address" v-model="state.address" placeholder="주소"><br>
+        <input type="text" id="sample6_detailAddress" v-model="state.detail" placeholder="상세주소">
+        <input type="text" id="sample6_extraAddress" v-model="state.extra" placeholder="참고항목">
+
+
         <el-form :model="state" label-width="120px">
             <el-form-item label="아이디">
                 <el-input v-model="state.id" style="width: 200px;" @keyup="handleIDCheck()"/>
@@ -45,6 +55,7 @@ import { reactive } from '@vue/reactivity'
 import axios from 'axios';
 import { ElMessage } from 'element-plus';
 import { useRouter } from 'vue-router';
+import { onMounted } from '@vue/runtime-core';
 export default {
     setup () {
         const router = useRouter();
@@ -58,7 +69,79 @@ export default {
             email1 : '이메일 주소를 선택하세요',
             age : '',
             check : '<label style="color: blue">중복확인</label>',
+            postcode : '',
+            address : '',
+            detail : '',
+            extra :'',
         });
+
+        // api 가져와서 쓰고 싶을때 vue나 react 용은 거의 없다. 
+        // 대부분이 자바스크립트용으로 script src 형태로 라이브러리를 주는데 vue는 npm i axios --save같은 방식으로 라이브러리를 설치한뒤 import해서 사용했음!
+        // 결국 vue 안에 javascript를 넣어서 적절히 쓸줄 알아야 한다.
+
+        // 페이지가 로딩될 때
+        onMounted(()=> {
+            // console.log(window);
+            // 자바스크립트에서 라이브러리를 추가한다는 것은 window에 추가한다는것!
+            let script = document.createElement('script');
+            script.src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+            document.head.appendChild(script); // window에 스크립트 추가
+            console.log(window); // windw에 없었던 daum이 생김
+        })
+
+        // 추가된 라이브러리 이용한 함수
+        const sample6_execDaumPostcode = () => {
+            console.log('sample6_execDaumPostcode');
+            new window.daum.Postcode({ // daum을 윈도우 안에 넣었으니 window.해줘야함. 속에 내용은 그대로 가져와도돼
+                oncomplete: function(data) {
+                // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+                var addr = ''; // 주소 변수
+                var extraAddr = ''; // 참고항목 변수
+
+                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+                    addr = data.roadAddress;
+                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+                    addr = data.jibunAddress;
+                }
+
+                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+                if(data.userSelectedType === 'R'){
+                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+                        extraAddr += data.bname;
+                    }
+                    // 건물명이 있고, 공동주택일 경우 추가한다.
+                    if(data.buildingName !== '' && data.apartment === 'Y'){
+                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+                    }
+                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+                    if(extraAddr !== ''){
+                        extraAddr = ' (' + extraAddr + ')';
+                    }
+                    // 조합된 참고항목을 해당 필드에 넣는다.
+                    document.getElementById("sample6_extraAddress").value = extraAddr;
+                
+                } else {
+                    document.getElementById("sample6_extraAddress").value = '';
+                }
+
+                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+                document.getElementById('sample6_postcode').value = data.zonecode;
+                state.postcode = data.zonecode; // v-model과 연동시키기 위함.. 이거 없으면 손으로 입력하는 값만 연동됨
+                document.getElementById("sample6_address").value = addr;
+                state.address = addr;
+                // 커서를 상세주소 필드로 이동한다.
+                document.getElementById("sample6_detailAddress").focus();
+            }
+
+            }).open();
+        };
+
 
 
         const handleIDCheck = async() => {
@@ -166,6 +249,7 @@ export default {
             state,
             handleJoin,
             handleIDCheck,
+            sample6_execDaumPostcode,
         }
     }
 }
