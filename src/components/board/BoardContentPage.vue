@@ -70,9 +70,6 @@ export default {
                 alert('이전글이 없습니다.')
                 router.push({path:"/boardcontent", query:{no:state.no}});
             }
-            // router.push({path:"/boardcontent", query:{no:state.prev}});
-            // state.no = state.prev;
-            // handleContent();
             else {
                 router.push({path:"/boardcontent", query:{no:state.prev}});
                 state.no = state.prev;
@@ -88,16 +85,17 @@ export default {
                 handleData();
                 handleData1();
             }
-            // alert('다음글이 없습니다.')
-            // router.push({path:"/boardcontent", query:{no:state.no}});
             else {
                 alert('다음글이 없습니다.')
                 router.push({path:"/boardcontent", query:{no:state.no}});
             } // else 없이 짜니까 다음글이 있을때 다음글 없습니다 뜨고 다음글로 넘어감...? 
 
-            // else가 없으면 if 조건 만족하면 if 문 돌리고 if문 바깥을 실행하고, if 조건 만족하지 않으면 if 문 안돌리고 바깥을 실행하나?
-            // if 안에서 return하면 함수가 거기에서 종료되므로 else를 생략해도 바깥이 실행안됨
-            // 당연하지! else 안쓴건 if문이랑 붙어있다 하더라도 if문과 별개의 것이니까. 단지 if 내에서 return하면 함수가 종료되어서 그이후가 안돌아가는것뿐
+            // if를 값이 0일때로 잡냐 0이 아닐때로 잡냐 일부러 다르게 해봤는데 실행에 있어서 차이는 아직 잘 모르겠다.. 백엔드 배우면 메모리 잡아먹는 정도가 다른게 보일지도..?
+          
+            // else가 없으면 if 조건 만족하면 if 문 돌리고 if문 바깥을 실행하고, if 조건 만족하지 않으면 if 문 안돌리고 바깥을 실행하네?
+            // if문 돌아가는 조건에서 if문 안에서 return하면 함수가 거기에서 종료되므로 else를 생략해도 바깥이 실행안됨
+            // 당연하지! else 안쓴건 if문이랑 붙어있다 하더라도 if문과 별개의 것이니까 if가 돌든 안돌든 실행됨
+            // 단지 if 내에서 return하면 함수가 종료되어서 그 이후가 안돌아가는것뿐!
         };
 
         // 게시물 상세 내역 가져오기

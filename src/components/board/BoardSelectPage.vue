@@ -40,12 +40,12 @@ import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
 export default {
     setup () {
-        // 변수 설정----------------------------------------
+        // 변수 설정-----------------------------------------
         const route = useRoute();
         const router = useRouter();
-        //-------------------------------------------------
+        //--------------------------------------------------
 
-        // 상태 변수----------------------------------------
+        // 상태 변수-----------------------------------------
         const state = reactive({
             page  : 1,
             text  : '',
@@ -53,9 +53,9 @@ export default {
             total : 0,
             pages : 0,
         });
-        //--------------------------------------------------
+        //---------------------------------------------------
 
-        // 게시물 목록 데이터 읽기(목록, 전체 게시물 수)-------
+        // 게시물 목록 데이터 읽기(목록, 전체 게시물 수)--------
         const handleData = async() => {
             const url = `/board101/selectlistimage.json?page=${state.page}&text=${state.text}`;
             const headers = {"Content-Type":"application/json"};
@@ -67,7 +67,7 @@ export default {
                 state.pages = Math.floor((data.total-1)/10) + 1 ; // pagination 직접 계산한것
             }
         };
-        //--------------------------------------------------
+        //---------------------------------------------------
 
         // 게시물 상세 페이지로 이동
         // boardcontent?no=게시물번호
@@ -76,15 +76,16 @@ export default {
             router.push({path:'/boardcontent', query:{no:id}});
         };
 
-        // 페이지 니에션
+        // 페이지네이션----------------------------------------
         const handlePage = (tmp) => {
             state.page = tmp;
             router.push({path:'/boardselect', query:{page:tmp}});
             // 새로 고침해도 pagination 유지 위해서 주소에 query 넣어주는것 (주소 바꿔줌)
             handleData();
         };
+        //----------------------------------------------------
 
-        // f5누를때 호출됨, page 유지 위해서 query(page)가져오기
+        // f5누를때 호출됨, page 유지 위해서 query(page)가져오기-
         onMounted(() => {
             // 주소창의 ?page=1 정보를 읽음
             const page = route.query.page;
@@ -94,6 +95,7 @@ export default {
             }
             handleData();
         });
+        //----------------------------------------------------
 
         return {
             state,
