@@ -2,7 +2,7 @@
 import { createWebHashHistory, createRouter } from 'vue-router' ;
 // 이번엔 # 들어간 주소로 해보자
 import store from '../stores/index' ;
-// 수동으로 import시켜야한다
+// 수동으로 import시킴
 
 // 2. 라우트 설정
 import Home from '@/components/HomePage.vue' ; // 앞엔 변수명이라서 짧아도 돼~ 뒤에는 파일명
@@ -17,6 +17,8 @@ import Logout from '@/components/LogoutPage.vue' ;
 import BoardInsert from '@/components/board/BoardInsertPage.vue' ;
 import BoardSelect from '@/components/board/BoardSelectPage.vue' ;
 import BoardContent from '@/components/board/BoardContentPage.vue' ;
+import BoardSelect1 from '@/components/board/BoardSelectPage1.vue' ;
+import Chart from '@/components/ChartPage.vue' ;
 
 const router = createRouter({ 
     history : createWebHashHistory(),
@@ -33,6 +35,8 @@ const router = createRouter({
         {path :'/boardinsert', component:BoardInsert},
         {path :'/boardselect', component:BoardSelect},
         {path :'/boardcontent', component:BoardContent},
+        {path :'/boardselect1', component:BoardSelect1},
+        {path :'/chart', component:Chart},
     ]
 });
 
@@ -62,6 +66,17 @@ router.beforeEach((to, from, next)=>{
                 return; // 함수종료, 아래쪽 next 수행하지 않기 위해서
             }
         }
+
+        // /boardselect = > /boardselect?page=1&text= (변경해야함)
+        // /boardselect?page=2&text=a (변경하면 안됨)
+        console.log(to.query)
+        if((to.path === '/boardselect') && (Object.keys(to.query).length === 0)) {
+            // next({path:'/boardselect1'});
+            next({path:'/boardselect', query:{page:1, text:''}});
+            return;
+        }
+        // if문 안에 들어간 이유는 현재 로그인, 로그아웃 창으로 이동하는 상황이 아니기 때문에 if문 돌아가게 되어있음
+        // 이 상황에서 if문 바깥에 짜면 안에서 return되는 상황이라 boardselect로 보낼 수가 없다!
 
         
     }

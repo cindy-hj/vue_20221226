@@ -6,14 +6,19 @@
             <!-- 참으로 인식하도로 하려면 : 필요 -->
             <!-- 위에 바로 :router="true"로 해도 되지만 나중에 찾기가 어려워서 변수로 설정하는것 -->
             <!-- 컴포넌트 event보고 select 써야겠다 정한것   -->
+            <!-- // index는 주소 -->
             <el-menu-item index="/">홈</el-menu-item>
             <el-menu-item index="/seller">판매자</el-menu-item> 
             <el-menu-item index="/login" v-if="state.logged === false">로그인</el-menu-item> 
             <el-menu-item index="/join" v-if="state.logged === false">회원가입</el-menu-item>
             <el-menu-item index="/logout" v-if="state.logged === true">{{ state.userid }}님 로그아웃</el-menu-item> 
             <el-menu-item index="/boardinsert">게시판글쓰기</el-menu-item>
-            <el-menu-item index="/boardselect">게시판목록</el-menu-item>   
-            <!-- // index는 주소 -->
+            <el-menu-item index="/boardselect1">게시판목록</el-menu-item>
+            <!-- 게시판 검색 이후 게시판 목록 눌렀을때 검색어가 풀린 상태로 해주기 위해서 
+                이동만 시키는 페이지(boardselect1)을 만들었고 게시판 목록을 누르면 무조건 이동만 시키는 페이지로 가도록 함. 
+                이렇게 하면 어떤 경우라도 이동용페이지->게시판목록을 받아오는거기때문에 딜레이는 좀 있지만... 새로고침한 효과를 받을수 있다 -->
+            <el-menu-item index="/chart">chart</el-menu-item>
+            
         </el-menu>
     </div>
 </template>

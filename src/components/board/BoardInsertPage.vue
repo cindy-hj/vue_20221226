@@ -31,9 +31,11 @@
 import { reactive } from '@vue/reactivity'
 import axios from 'axios';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 export default {
     setup () {
         const router = useRouter();
+        const store = useStore();
 
         const state = reactive({
             title   : '',
@@ -66,6 +68,11 @@ export default {
             const { data } = await axios.post(url, body, {headers});
             console.log(data);
             if(data.status === 200) {
+                store.commit('setDefaultActive', '/boardselect1');
+                // 글쓰기 이후 메뉴 활성화를 게시글목록으로 보내기 위함
+                // 로그인, 아웃의 경우 이전페이지가 어디일지 모르고 그 이전페이지로 돌아가야 했기 때문에 route를 이용해서 storage에 값을 보관하고 받고 해야했지만
+                // 지금 경우에는 게시글 작성후 무조건! 게시글 목록으로 가게 되있음
+                // route 이용할 필요 없고 그냥 값을 지정해주면 된다.
                 router.push({path:'/boardselect'});
             }
 

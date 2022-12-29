@@ -1,27 +1,43 @@
 <template>
     <div>
-        {{ state }}
-        <p>글번호: {{ state.row._id }}</p>
-        <p>제목: {{ state.row.title }}</p>
-        <p>내용: {{ state.row.content }}</p>
-        <p>이미지: <img :src="state.row.img" style="height: 400px;"/></p>
-        <p>작성자: {{ state.row.writer }}</p>
-        <p>조회수: {{ state.row.hit }}</p>
-        <p>등록일: {{ state.row.regdate }}</p>
-        <button>수정</button>
-        <button>삭제</button>
-        <button @click="handlePrev()">이전글</button>
-        <button @click="handleNext()">다음글</button>
-        <hr />
-
-        <div v-for="tmp of state.rows" :key="tmp">
-            <p>답글 내용: {{ tmp.content }}</p>
-            <p>작성자: {{ tmp.writer }}</p>
+        <div v-show="state.div === 1" v-if="state.row">
+            <p>글번호: {{ state.row._id }}</p>
+            <p>제목: {{ state.row.title }}</p>
+            <p>내용: {{ state.row.content }}</p>
+            <p>이미지: <img :src="state.row.img" style="height: 400px;"/></p>
+            <p>작성자: {{ state.row.writer }}</p>
+            <p>조회수: {{ state.row.hit }}</p>
+            <p>등록일: {{ state.row.regdate }}</p>
+            <button @click="state.div = 2">수정</button>
+            <button @click="handleDelete()">삭제</button>
+            <button @click="handlePrev()">이전글</button>
+            <button @click="handleNext()">다음글</button>
             <hr />
+
+            <table border="1">
+                <tr v-for="tmp of state.reply" :key="tmp">
+                    <td>{{ tmp._id }}</td>
+                    <td>{{ tmp.content }}</td>
+                    <td>{{ tmp.writer }}</td>
+                    <td>{{ tmp.regdate }}</td>
+                    <td><button @click="handleReplyDelete(tmp._id)">삭제</button></td> 
+                    <!-- // 삭제하는 버튼 여러개이므로 어떤 답글을 삭제할지 parmeter필요 -->
+                    <hr />
+                </tr>
+            </table>
+            <input type="text" v-model="state.recontent" placeholder="답글쓰기" />
+            <input type="text" v-model="state.rewriter" placeholder="답글작성자" />
+            <button @click="handleReplyInsert()">답글 쓰기</button>
         </div>
-        <input type="text" v-model="state.recontent" placeholder="답글쓰기" />
-        <input type="text" v-model="state.rewriter" placeholder="답글작성자" />
-        <button @click="handleRe()">답글 쓰기</button>
+
+        <div v-show="state.div === 2" v-if="state.row1">
+            <p>작성자: <input type="text" v-model="state.row1.writer" /></p>
+            <p>제목: <input type="text" v-model="state.row1.title" /></p>
+            <p>내용: <textarea v-model="state.row1.content"></textarea></p>
+            <button @click="handleUpdate()">수정완료</button>
+            <button @click="state.div = 1">취소</button>
+        </div>
+       
     </div>
 </template>
 
@@ -36,17 +52,66 @@ export default {
         const route = useRoute();     
         const router = useRouter();
         const state = reactive({
-            no      : Number(route.query.no),
-            row     : '',
-            prev    : 0,
-            next    : 0,
-            rows    : '',
-            recontent : '',
-            rewriter: '',
+            no      : Number(route.query.no), // 현재 글번호
+        
+            row1    : null, // 수정시 사용할 게시글 1개 정보
+            div     : 1, // 기본으로 보여주는 화면, 수정시 2로 
+
+            row     : null, // 게시글 1개정보
+            prev    : 0, // 이전글
+            next    : 0, // 다음글
+
+            reply    : [], // 답글 목록
+            recontent : '', // 답글 내용
+            rewriter: '', // 답글 작성자
+            // 답글 내용과 답글 작성자는 v-model과 연결하기 위해 변수 설정이 필요. 답글 번호나 작성일자는 변수 설정할 필요 없다!
+            // 필요한 답글 정보는 reply가 배열 형태로 이미 다 받아옴
         });   
 
+        const handleDelete = async() => {
+            if(confirm('삭제할까요?')) {
+                const url = `/board101/delete.json?no=${state.no}`;
+                const headers = {"Content-Type":"application/json"};
+                const body = {};
+                const { data } = await axios.delete(url, {headers:headers, data:body});
+                console.log('handleDelete', data);
+                if(data.status === 200) {
+                    router.push({path:'/boardselect'});
+                }
+            }
+        };
+
+        const handleUpdate = async() => {
+            const url =`/board101/update.json?no=${state.no}`;
+            const headers = {"Content-Type":"application/json"};
+            const body = { // row1의 값을 ''로 받으니까 밑줄생기네..null로 하니 됨
+                title : state.row1.title, 
+                content : state.row1.content,
+                writer : state.row1.writer,
+            }
+            const { data } = await axios.put(url, body, {headers});
+            console.log('handleUpdate', data);
+            if(data.status === 200) {
+                handleData();
+                state.div = 1;
+            }
+        };
+
+        const handleReplyDelete = async(reno) => {
+            if(confirm('삭제할까요?')) {
+                const url = `/board101/deletereply.json?no=${reno}`;
+                const headers = {"Content-Type":"application/json"};
+                const body = {};
+
+                const { data } = await axios.delete(url, {headers:headers, data:body});
+                console.log('handleReplyDelete', data);
+                if(data.status === 200) {
+                    handleData1();
+                }
+            }
+        };
         
-        const handleRe = async() => {
+        const handleReplyInsert = async() => {
             const url = `/board101/insertreply.json`;
             const headers = {"Content-Type":"application/json"};
             const body = {
@@ -55,12 +120,12 @@ export default {
                 writer: state.rewriter,
             }
             const { data } = await axios.post(url, body, {headers});
-            console.log('handleRe =>', data);
+            console.log('handleReply =>', data);
             if(data.status === 200) {
                 alert('답글이 작성되었습니다.');
                 handleData1();
                 state.recontent = '';
-                state.rewriter = '';
+                state.rewriter = ''; // 답글 작성 완료 후 입력하는 창 내용 비우기  
             }
 
         };
@@ -103,11 +168,12 @@ export default {
             const url =`/board101/selectoneimage.json?no=${state.no}`;
             const headers = {"Content-Type":"application/json"};
             const { data } = await axios.get(url, {headers});
-            console.log(data);
+            console.log('handleData =>', data);
             if(data.status === 200) {
                 state.row = data.result;
                 state.prev = data.prevNo;
                 state.next = data.nextNo;
+                state.row1 = { ...data.result }; 
             }    
         };
         
@@ -116,9 +182,9 @@ export default {
             const url = `/board101/selectreply.json?brdno=${state.no}`;
             const headers = {"Content-Type":"application/json"};
             const { data } = await axios.get(url, {headers});
-            console.log(data);
+            console.log('handleData1 =>', data);
             if(data.status === 200) {
-                state.rows = data.rows;
+                state.reply = data.rows;
             } 
         }
 
@@ -126,13 +192,19 @@ export default {
         onMounted(()=> {
             handleData();
             handleData1();
+            // 시작은 handelData를 먼저 읽지만 뭐가 먼저 끝날지는 보장할 수 없다. 
+            // console 찍어보면 handleData1이 먼저 찍힐때도.. 아닐때도.. 그때그떄 다르네-> 끝나는 시점은 우리가 정할수없다!
+            // 그래서 데이터 콘솔로 찍어볼때 함수이름 넣어서 찍는 습관들이기!
         })
 
         return {
             state,
             handlePrev,
             handleNext,
-            handleRe,
+            handleReplyInsert,
+            handleReplyDelete,
+            handleUpdate,
+            handleDelete,
         }
     }
 }
