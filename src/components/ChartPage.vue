@@ -4,7 +4,7 @@
         <div class="box">
             
             <div class="item">
-                <button @click="handleChartData2_1(), handleChartData2_2()">차트데이터변경</button>
+                <button @click="handleCount(count), handleChartData2()">차트데이터변경</button>
                 <!-- // 이렇게 하면 버튼 한번 클릭에 함수 2개가 출력됨. 약간의 시간차가 있긴 하지만 거의 동시에...
 				// parameter를 부여하면 하나씩 실행될까? 고민해보기 -->
                 <div style="height: 300px;">
@@ -123,7 +123,7 @@ export default {
         };
 
         const initChart = () => {
-            const ctx = document.getElementById('myChart').getContext('2d'); // (js부분) 찾아서
+            const ctx = document.getElementById('myChart').getContext('2d'); // js부분. 찾아서
             state.chart = new Chart(ctx, config); // 이게 있어서 차트 그려진것, 원래는 앞에 const chart = 있는건데 생략하고 new Chart(ctx, config)로 했다가
             // chart 데이터 변경함수에서 chart 사용하기 위해 공통변수로 만듬-> state.chart로 담는 순간 오류 발생...
             // 해결-> 담는게 문제가 아니라 위애 {{state}}로 출력하는것 때문에 오류 난것. 객체도아니고 스트링도아니고..그래서 오류났나봐
@@ -144,6 +144,11 @@ export default {
             handleChartData2();
             handleChartData3();
         });
+
+        const handleCount = (count) => {
+            console.log(count);
+            count++;
+        }
 
         const handleChartData = () => {
             // chart 데이터 변경
@@ -177,6 +182,7 @@ export default {
                 state.chart2.data.datasets[0].data = tmpData;
                 state.chart2.data.datasets[0].label = '연령대별 가입자 수';
                 state.chart2.update();
+                console.log('handleChartData2');
             }
         };
 
@@ -258,6 +264,7 @@ export default {
             handleChartData2,
             handleChartData2_1,
             handleChartData2_2,
+            handleCount,
         }
     }
 }

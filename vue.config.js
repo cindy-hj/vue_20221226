@@ -4,6 +4,11 @@ module.exports = defineConfig({
   
   devServer : {
     proxy : {
+      '/api' : { // 내가 만든 백엔드 호출
+        target : 'http://127.0.0.1:3000',
+        changeOrigin : true,
+        logLevel : 'debug'
+      },
       '/board101' : {
         target : 'http://1.234.5.158:23000',
         changeOrigin : true,

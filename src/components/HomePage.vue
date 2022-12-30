@@ -5,6 +5,7 @@
             <vueper-slide v-for="tmp of slides" :key="tmp" :title="tmp.title" :image="tmp.image">
             </vueper-slide>
         </vueper-slides>
+        <!-- 슬라이드 띄우기 위해 컴포넌트 설치 -->
 
         <div class="grid">
             <div class="item" v-for="tmp of state.rows" :key="tmp" style="cursor:pointer;" @click="handleContent(tmp._id)">

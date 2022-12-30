@@ -83,6 +83,7 @@ export default {
         onMounted(()=> {
             // console.log(window);
             // 자바스크립트에서 라이브러리를 추가한다는 것은 window에 추가한다는것!
+            // 이 작업을 수동으로 해줘야한다.
             let script = document.createElement('script');
             script.src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
             document.head.appendChild(script); // window에 스크립트 추가
@@ -92,7 +93,7 @@ export default {
         // 추가된 라이브러리 이용한 함수
         const sample6_execDaumPostcode = () => {
             console.log('sample6_execDaumPostcode');
-            new window.daum.Postcode({ // daum을 윈도우 안에 넣었으니 window.해줘야함. 속에 내용은 그대로 가져와도돼
+            new window.daum.Postcode({ // daum을 윈도우 안에 넣었으니 window.를 붙여줘야한다. 속에 내용은 그대로 가져와도돼
                 oncomplete: function(data) {
                 // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
 

@@ -1,6 +1,7 @@
 <template>
     <div>
         <div v-show="state.div === 1" v-if="state.row">
+            <!-- 평상시 보이는 화면, 답글도 포함시켜야함 -->
             <p>글번호: {{ state.row._id }}</p>
             <p>제목: {{ state.row.title }}</p>
             <p>내용: {{ state.row.content }}</p>
@@ -21,7 +22,7 @@
                     <td>{{ tmp.writer }}</td>
                     <td>{{ tmp.regdate }}</td>
                     <td><button @click="handleReplyDelete(tmp._id)">삭제</button></td> 
-                    <!-- // 삭제하는 버튼 여러개이므로 어떤 답글을 삭제할지 parmeter필요 -->
+                    <!-- 답글이 여러개이면 삭제하는 버튼도 여러개이므로 어떤 답글을 삭제할지 parmeter필요 -->
                     <hr />
                 </tr>
             </table>
@@ -31,6 +32,7 @@
         </div>
 
         <div v-show="state.div === 2" v-if="state.row1">
+        <!-- 수정시 보이는 화면 -->
             <p>작성자: <input type="text" v-model="state.row1.writer" /></p>
             <p>제목: <input type="text" v-model="state.row1.title" /></p>
             <p>내용: <textarea v-model="state.row1.content"></textarea></p>
@@ -98,7 +100,7 @@ export default {
         };
 
         const handleReplyDelete = async(reno) => {
-            if(confirm('삭제할까요?')) {
+            if(confirm('삭제할까요?')) { // 삭제 전 확인 필
                 const url = `/board101/deletereply.json?no=${reno}`;
                 const headers = {"Content-Type":"application/json"};
                 const body = {};
@@ -164,7 +166,7 @@ export default {
         };
 
         // 게시물 상세 내역 가져오기
-        const handleData = async() => {
+        const handleData = async() => { 
             const url =`/board101/selectoneimage.json?no=${state.no}`;
             const headers = {"Content-Type":"application/json"};
             const { data } = await axios.get(url, {headers});

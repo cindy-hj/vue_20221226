@@ -18,6 +18,7 @@
                 이동만 시키는 페이지(boardselect1)을 만들었고 게시판 목록을 누르면 무조건 이동만 시키는 페이지로 가도록 함. 
                 이렇게 하면 어떤 경우라도 이동용페이지->게시판목록을 받아오는거기때문에 딜레이는 좀 있지만... 새로고침한 효과를 받을수 있다 -->
             <el-menu-item index="/chart">chart</el-menu-item>
+            <el-menu-item index="/book">book</el-menu-item>
             
         </el-menu>
     </div>

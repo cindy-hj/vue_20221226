@@ -19,6 +19,9 @@ import BoardSelect from '@/components/board/BoardSelectPage.vue' ;
 import BoardContent from '@/components/board/BoardContentPage.vue' ;
 import BoardSelect1 from '@/components/board/BoardSelectPage1.vue' ;
 import Chart from '@/components/ChartPage.vue' ;
+import Book from '@/components/BookPage.vue' ;
+import BookInsert from '@/components/BookInsertPage.vue' ;
+import BookUpdate from '@/components/BookUpdatePage.vue' ;
 
 const router = createRouter({ 
     history : createWebHashHistory(),
@@ -37,6 +40,9 @@ const router = createRouter({
         {path :'/boardcontent', component:BoardContent},
         {path :'/boardselect1', component:BoardSelect1},
         {path :'/chart', component:Chart},
+        {path :'/book', component:Book},
+        {path :'/bookinsert', component:BookInsert},
+        {path :'/bookupdate', component:BookUpdate},
     ]
 });
 
