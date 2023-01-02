@@ -22,6 +22,9 @@ import Chart from '@/components/ChartPage.vue' ;
 import Book from '@/components/BookPage.vue' ;
 import BookInsert from '@/components/BookInsertPage.vue' ;
 import BookUpdate from '@/components/BookUpdatePage.vue' ;
+import ItemSelect from '@/components/item/ItemSelect.vue' ;
+import ItemContent1 from '@/components/item/ItemContent1.vue' ;
+import ItemInsert1 from '@/components/item/ItemInsert1.vue' ;
 
 const router = createRouter({ 
     history : createWebHashHistory(),
@@ -43,6 +46,9 @@ const router = createRouter({
         {path :'/book', component:Book},
         {path :'/bookinsert', component:BookInsert},
         {path :'/bookupdate', component:BookUpdate},
+        {path :'/itemselect', component:ItemSelect},
+        {path :'/itemcontent1', component:ItemContent1},
+        {path :'/iteminsert1', component:ItemInsert1},
     ]
 });
 
@@ -75,7 +81,7 @@ router.beforeEach((to, from, next)=>{
 
         // /boardselect = > /boardselect?page=1&text= (변경해야함)
         // /boardselect?page=2&text=a (변경하면 안됨)
-        console.log(to.query)
+        console.log('누르는 page', to.query)
         if((to.path === '/boardselect') && (Object.keys(to.query).length === 0)) {
             // next({path:'/boardselect1'});
             next({path:'/boardselect', query:{page:1, text:''}});
@@ -84,7 +90,10 @@ router.beforeEach((to, from, next)=>{
         // if문 안에 들어간 이유는 현재 로그인, 로그아웃 창으로 이동하는 상황이 아니기 때문에 if문 돌아가게 되어있음
         // 이 상황에서 if문 바깥에 짜면 안에서 return되는 상황이라 boardselect로 보낼 수가 없다!
 
-        
+        if((to.path === '/itemselect') && (Object.keys(to.query).length === 0)) {
+            next({path:'/itemselect', query:{page:1}});
+            return;
+        }
     }
     next(); // next가 없으면 페이지 이동이 안됨. () 안에 페이지가 없으면 기존에 이동하고자 하는 페이지로 이동.
 });
