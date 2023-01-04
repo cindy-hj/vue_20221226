@@ -17,6 +17,7 @@
         </div>
         <div class="item">
             <label class="lbl">이미지</label>
+            <img :src="state.imageurl" style="height: 100px;" />
             <input type="file" @change="handleImage($event)" />
         </div>
         <div class="item">
@@ -42,15 +43,18 @@ export default {
             content : '',
             writer  : '',
             file    : null,
+            imageurl: require('../../assets/imgs/noimage.png'),
         })
 
         const handleImage = (e) => {
             console.log(e);
             if(e.target.files.length > 0) {
                 state.file = e.target.files[0];
+                state.imageurl = URL.createObjectURL(e.target.files[0]);
             }
             else {
                 state.file = null;
+                state.imageurl = require('../../assets/imgs/noimage.png')
             }
         };
 

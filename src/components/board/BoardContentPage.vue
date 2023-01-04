@@ -36,6 +36,10 @@
             <p>작성자: <input type="text" v-model="state.row1.writer" /></p>
             <p>제목: <input type="text" v-model="state.row1.title" /></p>
             <p>내용: <textarea v-model="state.row1.content"></textarea></p>
+            <p>이미지: 
+                <img :src="state.imageurl" style="height: 100px;" />
+                <input type="file" @change="handleImage($event)"/>
+            </p>
             <button @click="handleUpdate()">수정완료</button>
             <button @click="state.div = 1">취소</button>
         </div>
@@ -58,6 +62,7 @@ export default {
         
             row1    : null, // 수정시 사용할 게시글 1개 정보
             div     : 1, // 기본으로 보여주는 화면, 수정시 2로 
+            imageurl: '', // 첨부한 이미지 미리보기
 
             row     : null, // 게시글 1개정보
             prev    : 0, // 이전글
@@ -69,6 +74,18 @@ export default {
             // 답글 내용과 답글 작성자는 v-model과 연결하기 위해 변수 설정이 필요. 답글 번호나 작성일자는 변수 설정할 필요 없다!
             // 필요한 답글 정보는 reply가 배열 형태로 이미 다 받아옴
         });   
+
+        const handleImage = async(e) => {
+            console.log(e);
+            if(e.target.files.length > 0) {
+                state.row1.img = e.target.files[0];
+                state.imageurl = URL.createObjectURL(e.target.files[0]);
+            } else {
+                state.row1.img = state.row.img;
+            }
+            console.log('이미지주소', state.imageurl);
+        };
+        
 
         const handleDelete = async() => {
             if(confirm('삭제할까요?')) {
@@ -83,14 +100,15 @@ export default {
             }
         };
 
+        // 이미지 수정 할때
         const handleUpdate = async() => {
-            const url =`/board101/update.json?no=${state.no}`;
-            const headers = {"Content-Type":"application/json"};
-            const body = { // row1의 값을 ''로 받으니까 밑줄생기네..null로 하니 됨
-                title : state.row1.title, 
-                content : state.row1.content,
-                writer : state.row1.writer,
-            }
+            const url =`/board101/updateimage.json?no=${state.no}`;
+            const headers = {"Content-Type":"multipart/form-data"};
+            const body = new FormData();
+            body.append("title", state.row1.title);
+            body.append("content", state.row1.content);
+            body.append("writer", state.row1.writer);
+            body.append("image", state.row1.img);
             const { data } = await axios.put(url, body, {headers});
             console.log('handleUpdate', data);
             if(data.status === 200) {
@@ -98,6 +116,24 @@ export default {
                 state.div = 1;
             }
         };
+
+        // 이미지 수정 안할때
+        // const handleUpdate = async() => {
+        //     const url =`/board101/update.json?no=${state.no}`;
+        //     const headers = {"Content-Type":"application/json"};
+        //     const body = { // row1의 값을 ''로 받으니까 밑줄생기네..null로 하니 됨
+        //         title : state.row1.title, 
+        //         content : state.row1.content,
+        //         writer : state.row1.writer,
+        //         img : state.row1.img,
+        //     }
+        //     const { data } = await axios.put(url, body, {headers});
+        //     console.log('handleUpdate', data);
+        //     if(data.status === 200) {
+        //         handleData();
+        //         state.div = 1;
+        //     }
+        // };
 
         const handleReplyDelete = async(reno) => {
             if(confirm('삭제할까요?')) { // 삭제 전 확인 필
@@ -207,6 +243,7 @@ export default {
             handleReplyDelete,
             handleUpdate,
             handleDelete,
+            handleImage,
         }
     }
 }

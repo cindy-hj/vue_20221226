@@ -5,6 +5,7 @@
             <input type="text" @keyup.enter="handleSearch()" v-model="state.text" placeholder="검색어 입력"/>
         </div>
         <div>
+            
             <table border="1">
                 <thead>
                     <tr>
@@ -27,7 +28,6 @@
                     </tr>
                 </tbody>
             </table>
-
             <!-- component 이용안하고 pagination 만든것 -->
             <div v-for="tmp of state.pages" :key="tmp" style="display: inline-block;">
                 <button @click="handlePage(tmp)">{{ tmp }}</button>

@@ -26,6 +26,7 @@ import ItemSelect from '@/components/item/ItemSelect.vue' ;
 import ItemContent1 from '@/components/item/ItemContent1.vue' ;
 import ItemInsert1 from '@/components/item/ItemInsert1.vue' ;
 import Board1Insert from '@/components/board1/BoardInsertPage.vue' ;
+import Form from '@/components/FormPage.vue' ;
 
 const router = createRouter({ 
     history : createWebHashHistory(),
@@ -51,6 +52,7 @@ const router = createRouter({
         {path :'/itemcontent1', component:ItemContent1},
         {path :'/iteminsert1', component:ItemInsert1},
         {path :'/board1insert', component:Board1Insert},
+        {path :'/form', component:Form},
     ]
 });
 
