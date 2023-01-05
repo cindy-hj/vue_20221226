@@ -2,6 +2,18 @@ const { defineConfig } = require('@vue/cli-service')
 module.exports = defineConfig({
   transpileDependencies: true, 
   
+  configureWebpack:{
+    performance: { 
+      hints: false,
+    },
+    optimization:{
+      minimize:true,
+      splitChunks:{
+        chunks: 'all',
+      }
+    }
+  },
+  
   devServer : {
     proxy : {
       '/api' : { // 내가 만든 백엔드 호출

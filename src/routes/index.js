@@ -27,6 +27,9 @@ import ItemContent1 from '@/components/item/ItemContent1.vue' ;
 import ItemInsert1 from '@/components/item/ItemInsert1.vue' ;
 import Board1Insert from '@/components/board1/BoardInsertPage.vue' ;
 import Form from '@/components/FormPage.vue' ;
+import Map from '@/components/MapPage.vue' ;
+import Chat from '@/components/ChatPage.vue' ;
+import Editor from '@/components/EditorPage.vue' ;
 
 const router = createRouter({ 
     history : createWebHashHistory(),
@@ -40,19 +43,27 @@ const router = createRouter({
         {path :'/join', component:Join},
         {path :'/login', component:Login},
         {path :'/logout', component:Logout},
+
         {path :'/boardinsert', component:BoardInsert},
         {path :'/boardselect', component:BoardSelect},
         {path :'/boardcontent', component:BoardContent},
         {path :'/boardselect1', component:BoardSelect1},
+
         {path :'/chart', component:Chart},
+
         {path :'/book', component:Book},
         {path :'/bookinsert', component:BookInsert},
         {path :'/bookupdate', component:BookUpdate},
+
         {path :'/itemselect', component:ItemSelect},
         {path :'/itemcontent1', component:ItemContent1},
         {path :'/iteminsert1', component:ItemInsert1},
         {path :'/board1insert', component:Board1Insert},
+
         {path :'/form', component:Form},
+        {path :'/map', component:Map},
+        {path :'/chat', component:Chat},
+        {path :'/editor', component:Editor},
     ]
 });
 

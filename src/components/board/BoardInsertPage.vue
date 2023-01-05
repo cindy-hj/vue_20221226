@@ -7,9 +7,10 @@
             <label class="lbl">제목</label>
             <input type="text" v-model="state.title" placeholder="제목" autofocus/>
         </div>
-        <div class="item">
+        <div class="item" style="width:700px;">
             <label class="lbl">내용</label>
-            <textarea rows="6" cols="22" v-model="state.content" placeholder="내용"></textarea>
+            <ckeditor :editor="state.editor" v-model="state.editorData" @ready="handleInit"></ckeditor>
+            <!-- <textarea rows="6" cols="22" v-model="state.content" placeholder="내용"></textarea> -->
         </div>
         <div class="item">
             <label class="lbl">작성자</label>
@@ -33,18 +34,36 @@ import { reactive } from '@vue/reactivity'
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
+
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import CKEditor from '@ckeditor/ckeditor5-vue';
+
 export default {
+    components : {
+        ckeditor : CKEditor.component,
+    },
+
     setup () {
         const router = useRouter();
         const store = useStore();
 
         const state = reactive({
             title   : '',
-            content : '',
             writer  : '',
             file    : null,
             imageurl: require('../../assets/imgs/noimage.png'),
-        })
+
+            editor: ClassicEditor,
+            editorData : ''
+        });
+
+        const handleInit = (editor) => {
+            editor.editing.view.change(writer => {
+                writer.setStyle("height","300px", 
+                    editor.editing.view.document.getRoot());
+            });
+            
+        };
 
         const handleImage = (e) => {
             console.log(e);
@@ -64,7 +83,7 @@ export default {
             const headers = {"Content-Type":"multipart/form-data"};
             const body = new FormData();
             body.append("title", state.title);
-            body.append("content", state.content);
+            body.append("content", state.editorData);
             body.append("writer", state.writer);
             // 파일명, 크기, 내용, 종류
             body.append("image", state.file); 
@@ -86,6 +105,7 @@ export default {
             state,
             handleImage,
             handleInsert,
+            handleInit,
         }
     }
 }
@@ -93,7 +113,7 @@ export default {
 
 <style lang="css" scoped>
     .container {
-        width   : 600px;
+        width   : 800px;
         padding : 10px;
         margin  : 5px;
         border  : 1px solid #cccccc;
