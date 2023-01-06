@@ -30,6 +30,7 @@ import Form from '@/components/FormPage.vue' ;
 import Map from '@/components/MapPage.vue' ;
 import Chat from '@/components/ChatPage.vue' ;
 import Editor from '@/components/EditorPage.vue' ;
+import Vuex from '@/components/VuexPage.vue' ;
 
 const router = createRouter({ 
     history : createWebHashHistory(),
@@ -64,6 +65,8 @@ const router = createRouter({
         {path :'/map', component:Map},
         {path :'/chat', component:Chat},
         {path :'/editor', component:Editor},
+
+        {path :'/vuex', component:Vuex},
     ]
 });
 

@@ -48,7 +48,7 @@ export default {
             quantity : 0,
             price : 0,
             imagedata : null,
-            imageurl : require('../assets/imgs/noimage.png')
+            imageurl : require('../assets/imgs/noimage.png'),
         });
 
         const router = useRouter();
@@ -83,11 +83,10 @@ export default {
             }
         }
 
-
         return {
             state,
             handleImage,
-            handleInsert
+            handleInsert,
         }
     }
 }

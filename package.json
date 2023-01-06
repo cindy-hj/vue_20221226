@@ -14,7 +14,7 @@
     "axios": "^1.2.1",
     "chart.js": "^2.9.4",
     "core-js": "^3.8.3",
-    "element-plus": "^2.2.27",
+    "element-plus": "^2.2.28",
     "precompiled-mqtt": "^4.3.14-beta",
     "vue": "^3.2.13",
     "vue-router": "^4.0.13",

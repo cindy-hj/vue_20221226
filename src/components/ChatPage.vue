@@ -44,6 +44,9 @@ export default {
 
         const handleConnect = () => {
             try{
+                
+                // host와 port가 변경되는 값은 아니지만 나중에 수정하는 경우를 고려해서 따로 변수 설정해둔걸 가져와서 쓰는것.
+                // 실제로는 변수에다가 값을 하드 코딩하는게 아니라 백엔드에서 데이터 가져오도록 코딩한다!
                 // ws://1.234.5.158:11884
                 const url = `ws://${state.host}:${state.port}`;
                 state.client = mqtt.connect(url, state.options); // url로 접속. option정보 이용해서
